@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, computed, reactive } from 'vue'
 import images from './images.json'
+import { directive as viewer } from 'v-viewer'
+
+const vViewer = viewer()
 
 // Pagination settings
 const pageSize = 12
@@ -99,6 +102,13 @@ onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll)
   window.removeEventListener('resize', updateColumnCount)
 })
+
+const showViewer = () => {
+  console.log('show viewer')
+  // @ts-expect-error fuck vue ecosystem
+  const viewer = document.querySelector('.images').$viewer
+  viewer.show()
+}
 </script>
 
 <template>
@@ -116,7 +126,8 @@ onUnmounted(() => {
         <div v-for="(column, colIndex) in columns" :key="'col-' + colIndex" class="waterfall-column">
           <!-- Each image in the column -->
           <div v-for="(image, imgIndex) in column" :key="'img-' + colIndex + '-' + imgIndex" class="waterfall-item">
-            <img :src="image" alt="waterfall image" />
+            <img :src="image" alt="waterfall image"
+              v-viewer="{ transition: false, title: false, toolbar: false, navbar: false }" @click="showViewer" />
           </div>
         </div>
       </div>
