@@ -25,7 +25,7 @@ const hasMoreImages = computed(() => {
 const distributeImages = () => {
   // Clear existing columns
   columns.forEach(column => column.length = 0)
-  
+
   // Distribute images to columns (one by one to each column)
   displayedImages.value.forEach((image, index) => {
     const columnIndex = index % columnCount.value
@@ -36,7 +36,7 @@ const distributeImages = () => {
 // Update columns when window resizes
 const updateColumnCount = () => {
   let newColumnCount = 4 // Default
-  
+
   if (window.innerWidth <= 480) {
     newColumnCount = 1
   } else if (window.innerWidth <= 768) {
@@ -44,7 +44,7 @@ const updateColumnCount = () => {
   } else if (window.innerWidth <= 1200) {
     newColumnCount = 3
   }
-  
+
   if (newColumnCount !== columnCount.value) {
     columnCount.value = newColumnCount
     // Resize columns array
@@ -62,9 +62,9 @@ const updateColumnCount = () => {
 // Load more images when scrolled to bottom
 const loadMoreImages = () => {
   if (loading.value || !hasMoreImages.value) return
-  
+
   loading.value = true
-  
+
   // Simulate network delay (remove in production)
   setTimeout(() => {
     currentPage.value++
@@ -78,7 +78,7 @@ const handleScroll = () => {
   const scrollHeight = document.documentElement.scrollHeight
   const scrollTop = document.documentElement.scrollTop || document.body.scrollTop
   const clientHeight = document.documentElement.clientHeight
-  
+
   // Check if scrolled to bottom (with 200px threshold)
   if (scrollHeight - scrollTop - clientHeight < 200) {
     loadMoreImages()
@@ -89,7 +89,7 @@ const handleScroll = () => {
 onMounted(() => {
   window.addEventListener('scroll', handleScroll)
   window.addEventListener('resize', updateColumnCount)
-  
+
   // Initial setup
   updateColumnCount()
   distributeImages()
@@ -105,23 +105,23 @@ onUnmounted(() => {
   <div class="waterfall-container">
     <div class="waterfall">
       <!-- Each column is a separate div -->
-      <div v-for="(column, colIndex) in columns" :key="'col-'+colIndex" class="waterfall-column">
+      <div v-for="(column, colIndex) in columns" :key="'col-' + colIndex" class="waterfall-column">
         <!-- Each image in the column -->
-        <div v-for="(image, imgIndex) in column" :key="'img-'+colIndex+'-'+imgIndex" class="waterfall-item">
+        <div v-for="(image, imgIndex) in column" :key="'img-' + colIndex + '-' + imgIndex" class="waterfall-item">
           <img :src="image" alt="waterfall image" />
         </div>
       </div>
     </div>
-    
+
     <!-- Loading indicator -->
     <div v-if="loading" class="loading-container">
       <div class="loading-spinner"></div>
-      <p>Loading more images...</p>
+      <p>加载中...</p>
     </div>
-    
+
     <!-- End of content message -->
     <div v-if="!hasMoreImages && displayedImages.length > 0" class="end-message">
-      <p>You've reached the end of the gallery</p>
+      <p>已加载全部</p>
     </div>
   </div>
 </template>
@@ -184,7 +184,9 @@ onUnmounted(() => {
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* End message styles */
