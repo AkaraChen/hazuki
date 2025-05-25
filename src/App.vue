@@ -9,7 +9,7 @@ const loading = ref(false)
 
 // Column settings
 const columnCount = ref(4) // Default column count
-const columns = reactive(Array(columnCount.value).fill().map(() => []))
+const columns = reactive<(string[])[]>(Array(columnCount.value).fill(undefined).map(() => []))
 
 // Compute displayed images based on current page
 const displayedImages = computed(() => {
