@@ -102,35 +102,45 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <github-corners repo="AkaraChen/hazuki" blank />
-  <div class="waterfall-container">
-    <div class="waterfall">
-      <!-- Each column is a separate div -->
-      <div v-for="(column, colIndex) in columns" :key="'col-' + colIndex" class="waterfall-column">
-        <!-- Each image in the column -->
-        <div v-for="(image, imgIndex) in column" :key="'img-' + colIndex + '-' + imgIndex" class="waterfall-item">
-          <img :src="image" alt="waterfall image" />
+  <div class="container">
+    <github-corners repo="AkaraChen/hazuki" blank />
+    <h1>
+      反田叶月 collection
+    </h1>
+    <div class="waterfall-container">
+      <div class="waterfall">
+        <!-- Each column is a separate div -->
+        <div v-for="(column, colIndex) in columns" :key="'col-' + colIndex" class="waterfall-column">
+          <!-- Each image in the column -->
+          <div v-for="(image, imgIndex) in column" :key="'img-' + colIndex + '-' + imgIndex" class="waterfall-item">
+            <img :src="image" alt="waterfall image" />
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- Loading indicator -->
-    <div v-if="loading" class="loading-container">
-      <div class="loading-spinner"></div>
-      <p>加载中...</p>
-    </div>
+      <!-- Loading indicator -->
+      <div v-if="loading" class="loading-container">
+        <div class="loading-spinner"></div>
+        <p>加载中...</p>
+      </div>
 
-    <!-- End of content message -->
-    <div v-if="!hasMoreImages && displayedImages.length > 0" class="end-message">
-      <p>已加载全部</p>
+      <!-- End of content message -->
+      <div v-if="!hasMoreImages && displayedImages.length > 0" class="end-message">
+        <p>已加载全部</p>
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-.waterfall-container {
+.container {
   width: 100%;
   padding: 20px;
+  box-sizing: border-box;
+}
+
+.waterfall-container {
+  width: 100%;
   box-sizing: border-box;
 }
 
