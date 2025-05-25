@@ -104,9 +104,12 @@ onUnmounted(() => {
 <template>
   <div class="container">
     <github-corners repo="AkaraChen/hazuki" blank />
-    <h1>
-      反田叶月 collection
-    </h1>
+    <header class="site-header">
+      <h1>反田叶月 collection！</h1>
+      <a href="https://x.com/tanda_hazuki" target="_blank" class="social-link">
+        <img src="./assets/x.svg" alt="X (Twitter)" class="x-icon" />
+      </a>
+    </header>
     <div class="waterfall-container">
       <div class="waterfall">
         <!-- Each column is a separate div -->
@@ -137,6 +140,35 @@ onUnmounted(() => {
   width: 100%;
   padding: 20px;
   box-sizing: border-box;
+}
+
+.site-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.site-header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.social-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  transition: transform 0.2s ease;
+}
+
+.social-link:hover {
+  transform: scale(1.1);
+}
+
+.x-icon {
+  width: 24px;
+  height: 24px;
+  margin-left: 12px;
 }
 
 .waterfall-container {
