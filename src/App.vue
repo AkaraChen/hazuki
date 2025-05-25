@@ -1,11 +1,15 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, computed } from 'vue'
+import { ref, onMounted, onUnmounted, computed, reactive } from 'vue'
 import { images } from './images'
 
 // Pagination settings
 const pageSize = 12
 const currentPage = ref(1)
 const loading = ref(false)
+
+// Column settings
+const columnCount = ref(4) // Default column count
+const columns = reactive(Array(columnCount.value).fill().map(() => []))
 
 // Compute displayed images based on current page
 const displayedImages = computed(() => {
@@ -17,6 +21,44 @@ const hasMoreImages = computed(() => {
   return displayedImages.value.length < images.length
 })
 
+// Distribute images into columns
+const distributeImages = () => {
+  // Clear existing columns
+  columns.forEach(column => column.length = 0)
+  
+  // Distribute images to columns (one by one to each column)
+  displayedImages.value.forEach((image, index) => {
+    const columnIndex = index % columnCount.value
+    columns[columnIndex].push(image)
+  })
+}
+
+// Update columns when window resizes
+const updateColumnCount = () => {
+  let newColumnCount = 4 // Default
+  
+  if (window.innerWidth <= 480) {
+    newColumnCount = 1
+  } else if (window.innerWidth <= 768) {
+    newColumnCount = 2
+  } else if (window.innerWidth <= 1200) {
+    newColumnCount = 3
+  }
+  
+  if (newColumnCount !== columnCount.value) {
+    columnCount.value = newColumnCount
+    // Resize columns array
+    while (columns.length > columnCount.value) {
+      columns.pop()
+    }
+    while (columns.length < columnCount.value) {
+      columns.push([])
+    }
+    // Redistribute images
+    distributeImages()
+  }
+}
+
 // Load more images when scrolled to bottom
 const loadMoreImages = () => {
   if (loading.value || !hasMoreImages.value) return
@@ -27,6 +69,7 @@ const loadMoreImages = () => {
   setTimeout(() => {
     currentPage.value++
     loading.value = false
+    distributeImages() // Redistribute images after loading more
   }, 500)
 }
 
@@ -42,21 +85,31 @@ const handleScroll = () => {
   }
 }
 
-// Setup and cleanup scroll event listener
+// Setup event listeners and initial distribution
 onMounted(() => {
   window.addEventListener('scroll', handleScroll)
+  window.addEventListener('resize', updateColumnCount)
+  
+  // Initial setup
+  updateColumnCount()
+  distributeImages()
 })
 
 onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll)
+  window.removeEventListener('resize', updateColumnCount)
 })
 </script>
 
 <template>
   <div class="waterfall-container">
     <div class="waterfall">
-      <div v-for="(image, key) in displayedImages" :key="key" class="waterfall-item">
-        <img :src="image" alt="waterfall image" />
+      <!-- Each column is a separate div -->
+      <div v-for="(column, colIndex) in columns" :key="'col-'+colIndex" class="waterfall-column">
+        <!-- Each image in the column -->
+        <div v-for="(image, imgIndex) in column" :key="'img-'+colIndex+'-'+imgIndex" class="waterfall-item">
+          <img :src="image" alt="waterfall image" />
+        </div>
       </div>
     </div>
     
@@ -81,16 +134,23 @@ onUnmounted(() => {
 }
 
 .waterfall {
-  column-count: 4; /* Default number of columns */
-  column-gap: 15px;
+  display: flex;
   width: 100%;
+  gap: 15px;
+}
+
+.waterfall-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
 .waterfall-item {
-  break-inside: avoid; /* Prevents item from breaking across columns */
-  margin-bottom: 15px;
   border-radius: 8px;
   overflow: hidden;
+  /* Each item maintains its position in its column */
+  position: relative;
 }
 
 .waterfall-item img {
