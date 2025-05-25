@@ -102,6 +102,7 @@ onUnmounted(() => {
 </script>
 
 <template>
+  <github-corners repo="AkaraChen/hazuki" blank />
   <div class="waterfall-container">
     <div class="waterfall">
       <!-- Each column is a separate div -->

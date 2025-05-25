@@ -17,7 +17,8 @@
   },
   "dependencies": {
     "pinia": "^3.0.1",
-    "vue": "^3.5.13"
+    "vue": "^3.5.13",
+    "wc-github-corners": "^0.1.6"
   },
   "devDependencies": {
     "@tsconfig/node22": "^22.0.1",

@@ -8,17 +8,25 @@ import { viteStaticCopy } from 'vite-plugin-static-copy'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
-    vue(), 
-    vueJsx(), 
+    vue({
+      template: {
+        compilerOptions: {
+          isCustomElement: (tag) => {
+            return ['github-corners'].includes(tag)
+          },
+        },
+      },
+    }),
+    vueJsx(),
     vueDevTools(),
     viteStaticCopy({
       targets: [
         {
           src: 'content/*',
-          dest: 'content'
-        }
-      ]
-    })
+          dest: 'content',
+        },
+      ],
+    }),
   ],
   resolve: {
     alias: {
