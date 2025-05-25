@@ -147,10 +147,28 @@ const showViewer = () => {
 </template>
 
 <style scoped>
+:root {
+  --background-color: #ffffff;
+  --text-color: #333333;
+  --border-color: #eaeaea;
+  --end-message-color: #666;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background-color: #222222;
+    --text-color: #f5f5f5;
+    --border-color: #444444;
+    --end-message-color: #aaaaaa;
+  }
+}
+
 .container {
   width: 100%;
   padding: 20px;
   box-sizing: border-box;
+  background-color: var(--background-color);
+  color: var(--text-color);
 }
 
 .site-header {
@@ -163,6 +181,7 @@ const showViewer = () => {
   font-size: 28px;
   font-weight: 700;
   margin: 0;
+  color: var(--text-color);
 }
 
 .social-link {
@@ -180,6 +199,12 @@ const showViewer = () => {
   width: 24px;
   height: 24px;
   margin-left: 12px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .x-icon {
+    filter: invert(1);
+  }
 }
 
 .waterfall-container {
@@ -247,9 +272,9 @@ const showViewer = () => {
 .end-message {
   text-align: center;
   padding: 20px 0;
-  color: #666;
+  color: var(--end-message-color);
   font-style: italic;
-  border-top: 1px solid #eee;
+  border-top: 1px solid var(--border-color);
   margin-top: 20px;
 }
 
