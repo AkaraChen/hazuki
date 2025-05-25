@@ -127,7 +127,8 @@ const showViewer = () => {
           <!-- Each image in the column -->
           <div v-for="(image, imgIndex) in column" :key="'img-' + colIndex + '-' + imgIndex" class="waterfall-item">
             <img :src="image" alt="waterfall image"
-              v-viewer="{ transition: false, title: false, toolbar: false, navbar: false }" @click="showViewer" />
+              v-viewer="{ transition: false, title: false, toolbar: false, navbar: false, movable: false, zoomable: false }"
+              @click="showViewer" />
           </div>
         </div>
       </div>
