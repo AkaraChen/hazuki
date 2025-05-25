@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, computed, reactive } from 'vue'
-import { images } from './images'
+import images from './images.json'
 
 // Pagination settings
 const pageSize = 12
