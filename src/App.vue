@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { computed } from 'vue'
 import images from './images.json'
 import { directive as viewer } from 'v-viewer'
 import { shuffleArray } from './utils'
 import { useOnScrollToEnd } from './hooks/on-scroll-to-end'
-import { useMounted } from './hooks/mounted'
-import { useLoadMore } from './hooks/use-load-more'
+import { useLoadMore } from './hooks/load-more'
+import { useBreakpoint } from './hooks/breakpoint'
 
 const vViewer = viewer()
 const showViewer = () => {
@@ -17,79 +17,64 @@ const showViewer = () => {
 // Shuffle images on load
 const shuffledImages = shuffleArray(images)
 
-// Column settings
-const columnCount = ref(4) // Default column count
-const columns = reactive<string[][]>(
-  Array(columnCount.value)
-    .fill(undefined)
-    .map(() => []),
-)
+// Use breakpoint hook for responsive column count
+const { currentBreakpoint } = useBreakpoint<'sm' | 'md' | 'lg' | 'xl'>({
+  breakpoints: [
+    { width: 480, value: 'sm' },
+    { width: 768, value: 'md' },
+    { width: 1200, value: 'lg' },
+    { width: 1600, value: 'xl' },
+  ],
+  defaultValue: 'xl',
+})
+const columnCount = computed(() => {
+  switch (currentBreakpoint.value) {
+    case 'sm':
+      return 1
+    case 'md':
+      return 2
+    case 'lg':
+      return 3
+    case 'xl':
+      return 4
+    default:
+      return 4
+  }
+})
 
-// Distribute images into columns
-const distributeImages = () => {
-  // Clear existing columns
-  columns.forEach((column) => (column.length = 0))
+// Compute columns based on displayed items and column count
+const columns = computed<string[][]>(() => {
+  // Create empty columns array
+  const result = Array(columnCount.value)
+    .fill(undefined)
+    .map(() => [] as string[])
 
   // Distribute images to columns (one by one to each column)
   displayedItems.value.forEach((image, index) => {
     const columnIndex = index % columnCount.value
-    columns[columnIndex].push(image)
+    result[columnIndex].push(image)
   })
-}
+
+  return result
+})
 
 // Use the load more hook
 const {
   loading,
   displayedItems,
   hasMoreItems: hasMoreImages,
-  loadMoreItems: loadMoreImages
+  loadMoreItems: loadMoreImages,
 } = useLoadMore({
   items: shuffledImages,
   pageSize: 12,
   initialPage: 1,
-  onLoadMore: distributeImages
 })
 
-// Update columns when window resizes
-const updateColumnCount = () => {
-  let newColumnCount = 4 // Default
-
-  if (window.innerWidth <= 480) {
-    newColumnCount = 1
-  } else if (window.innerWidth <= 768) {
-    newColumnCount = 2
-  } else if (window.innerWidth <= 1200) {
-    newColumnCount = 3
-  }
-
-  if (newColumnCount !== columnCount.value) {
-    columnCount.value = newColumnCount
-    // Resize columns array
-    while (columns.length > columnCount.value) {
-      columns.pop()
-    }
-    while (columns.length < columnCount.value) {
-      columns.push([])
-    }
-    // Redistribute images
-    distributeImages()
-  }
-}
+// Watch for changes in column count or displayed items
+// The computed property will automatically recalculate when dependencies change
+// No explicit watch needed as Vue's reactivity system handles this automatically
 
 useOnScrollToEnd({ loadMoreImages })
-
-useMounted({
-  callback: () => {
-    window.addEventListener('resize', updateColumnCount)
-
-    // Initial setup
-    updateColumnCount()
-    distributeImages()
-  },
-  onUnmountedCallback: () => {
-    window.removeEventListener('resize', updateColumnCount)
-  },
-})
 </script>
 
 <template>
