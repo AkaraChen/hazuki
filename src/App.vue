@@ -119,17 +119,30 @@ useMounted({
     <div class="waterfall-container">
       <div class="waterfall">
         <!-- Each column is a separate div -->
-        <div v-for="(column, colIndex) in columns" :key="'col-' + colIndex" class="waterfall-column">
+        <div
+          v-for="(column, colIndex) in columns"
+          :key="'col-' + colIndex"
+          class="waterfall-column"
+        >
           <!-- Each image in the column -->
-          <div v-for="(image, imgIndex) in column" :key="'img-' + colIndex + '-' + imgIndex" class="waterfall-item">
-            <img :src="image" alt="waterfall image" v-viewer="{
-              transition: false,
-              title: false,
-              toolbar: false,
-              navbar: false,
-              movable: false,
-              zoomable: false,
-            }" @click="showViewer" />
+          <div
+            v-for="(image, imgIndex) in column"
+            :key="'img-' + colIndex + '-' + imgIndex"
+            class="waterfall-item"
+          >
+            <img
+              :src="image"
+              alt="waterfall image"
+              v-viewer="{
+                transition: false,
+                title: false,
+                toolbar: false,
+                navbar: false,
+                movable: false,
+                zoomable: false,
+              }"
+              @click="showViewer"
+            />
           </div>
         </div>
       </div>
