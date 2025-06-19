@@ -42,20 +42,20 @@ const columnCount = computed(() => {
   }
 })
 
-// Compute columns based on displayed items and column count
+// Compute columns based on displayed items and column count using functional approach
 const columns = computed<string[][]>(() => {
-  // Create empty columns array
-  const result = Array(columnCount.value)
-    .fill(undefined)
-    .map(() => [] as string[])
+  // Use reduce to distribute images into columns
+  return displayedItems.value.reduce(
+    (acc, image, index) => {
+      const columnIndex = index % columnCount.value
+      // Create a new array for the target column with the image added
+      const updatedColumn = [...acc[columnIndex], image]
 
-  // Distribute images to columns (one by one to each column)
-  displayedItems.value.forEach((image, index) => {
-    const columnIndex = index % columnCount.value
-    result[columnIndex].push(image)
-  })
-
-  return result
+      // Return a new columns array with the updated column
+      return acc.map((col, i) => (i === columnIndex ? updatedColumn : col))
+    },
+    Array.from({ length: columnCount.value }, () => [] as string[]),
+  )
 })
 
 // Use the load more hook
@@ -89,17 +89,30 @@ useOnScrollToEnd({ loadMoreImages })
     <div class="waterfall-container">
       <div class="waterfall">
         <!-- Each column is a separate div -->
-        <div v-for="(column, colIndex) in columns" :key="'col-' + colIndex" class="waterfall-column">
+        <div
+          v-for="(column, colIndex) in columns"
+          :key="'col-' + colIndex"
+          class="waterfall-column"
+        >
           <!-- Each image in the column -->
-          <div v-for="(image, imgIndex) in column" :key="'img-' + colIndex + '-' + imgIndex" class="waterfall-item">
-            <img :src="image" alt="waterfall image" v-viewer="{
-              transition: false,
-              title: false,
-              toolbar: false,
-              navbar: false,
-              movable: false,
-              zoomable: false,
-            }" @click="showViewer" />
+          <div
+            v-for="(image, imgIndex) in column"
+            :key="'img-' + colIndex + '-' + imgIndex"
+            class="waterfall-item"
+          >
+            <img
+              :src="image"
+              alt="waterfall image"
+              v-viewer="{
+                transition: false,
+                title: false,
+                toolbar: false,
+                navbar: false,
+                movable: false,
+                zoomable: false,
+              }"
+              @click="showViewer"
+            />
           </div>
         </div>
       </div>
