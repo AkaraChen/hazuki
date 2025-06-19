@@ -1,10 +1,17 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, computed, reactive } from 'vue'
+import { ref, computed, reactive } from 'vue'
 import images from './images.json'
 import { directive as viewer } from 'v-viewer'
 import { shuffleArray } from './utils'
+import { useOnScrollToEnd } from './hooks/on-scroll-to-end'
+import { useMounted } from './hooks/mounted'
 
 const vViewer = viewer()
+const showViewer = () => {
+  // @ts-expect-error fuck vue ecosystem
+  const viewer = document.querySelector('.images').$viewer
+  viewer.show()
+}
 
 // Shuffle images on load
 const shuffledImages = shuffleArray(images)
@@ -16,7 +23,11 @@ const loading = ref(false)
 
 // Column settings
 const columnCount = ref(4) // Default column count
-const columns = reactive<(string[])[]>(Array(columnCount.value).fill(undefined).map(() => []))
+const columns = reactive<string[][]>(
+  Array(columnCount.value)
+    .fill(undefined)
+    .map(() => []),
+)
 
 // Compute displayed images based on current page
 const displayedImages = computed(() => {
@@ -31,7 +42,7 @@ const hasMoreImages = computed(() => {
 // Distribute images into columns
 const distributeImages = () => {
   // Clear existing columns
-  columns.forEach(column => column.length = 0)
+  columns.forEach((column) => (column.length = 0))
 
   // Distribute images to columns (one by one to each column)
   displayedImages.value.forEach((image, index) => {
@@ -80,39 +91,20 @@ const loadMoreImages = () => {
   }, 500)
 }
 
-// Scroll event handler
-const handleScroll = () => {
-  const scrollHeight = document.documentElement.scrollHeight
-  const scrollTop = document.documentElement.scrollTop || document.body.scrollTop
-  const clientHeight = document.documentElement.clientHeight
+useOnScrollToEnd({ loadMoreImages })
 
-  // Check if scrolled to bottom (with 200px threshold)
-  if (scrollHeight - scrollTop - clientHeight < 200) {
-    loadMoreImages()
-  }
-}
+useMounted({
+  callback: () => {
+    window.addEventListener('resize', updateColumnCount)
 
-// Setup event listeners and initial distribution
-onMounted(() => {
-  window.addEventListener('scroll', handleScroll)
-  window.addEventListener('resize', updateColumnCount)
-
-  // Initial setup
-  updateColumnCount()
-  distributeImages()
+    // Initial setup
+    updateColumnCount()
+    distributeImages()
+  },
+  onUnmountedCallback: () => {
+    window.removeEventListener('resize', updateColumnCount)
+  },
 })
-
-onUnmounted(() => {
-  window.removeEventListener('scroll', handleScroll)
-  window.removeEventListener('resize', updateColumnCount)
-})
-
-const showViewer = () => {
-  console.log('show viewer')
-  // @ts-expect-error fuck vue ecosystem
-  const viewer = document.querySelector('.images').$viewer
-  viewer.show()
-}
 </script>
 
 <template>
@@ -130,9 +122,14 @@ const showViewer = () => {
         <div v-for="(column, colIndex) in columns" :key="'col-' + colIndex" class="waterfall-column">
           <!-- Each image in the column -->
           <div v-for="(image, imgIndex) in column" :key="'img-' + colIndex + '-' + imgIndex" class="waterfall-item">
-            <img :src="image" alt="waterfall image"
-              v-viewer="{ transition: false, title: false, toolbar: false, navbar: false, movable: false, zoomable: false }"
-              @click="showViewer" />
+            <img :src="image" alt="waterfall image" v-viewer="{
+              transition: false,
+              title: false,
+              toolbar: false,
+              navbar: false,
+              movable: false,
+              zoomable: false,
+            }" @click="showViewer" />
           </div>
         </div>
       </div>
