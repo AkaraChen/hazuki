@@ -2,8 +2,12 @@
 import { ref, onMounted, onUnmounted, computed, reactive } from 'vue'
 import images from './images.json'
 import { directive as viewer } from 'v-viewer'
+import { shuffleArray } from './utils'
 
 const vViewer = viewer()
+
+// Shuffle images on load
+const shuffledImages = shuffleArray(images)
 
 // Pagination settings
 const pageSize = 12
@@ -16,12 +20,12 @@ const columns = reactive<(string[])[]>(Array(columnCount.value).fill(undefined).
 
 // Compute displayed images based on current page
 const displayedImages = computed(() => {
-  return images.slice(0, currentPage.value * pageSize)
+  return shuffledImages.slice(0, currentPage.value * pageSize)
 })
 
 // Check if there are more images to load
 const hasMoreImages = computed(() => {
-  return displayedImages.value.length < images.length
+  return displayedImages.value.length < shuffledImages.length
 })
 
 // Distribute images into columns
