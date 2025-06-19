@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { ref, computed, reactive } from 'vue'
+import { ref, reactive } from 'vue'
 import images from './images.json'
 import { directive as viewer } from 'v-viewer'
 import { shuffleArray } from './utils'
 import { useOnScrollToEnd } from './hooks/on-scroll-to-end'
 import { useMounted } from './hooks/mounted'
+import { useLoadMore } from './hooks/use-load-more'
 
 const vViewer = viewer()
 const showViewer = () => {
@@ -16,11 +17,6 @@ const showViewer = () => {
 // Shuffle images on load
 const shuffledImages = shuffleArray(images)
 
-// Pagination settings
-const pageSize = 12
-const currentPage = ref(1)
-const loading = ref(false)
-
 // Column settings
 const columnCount = ref(4) // Default column count
 const columns = reactive<string[][]>(
@@ -29,27 +25,30 @@ const columns = reactive<string[][]>(
     .map(() => []),
 )
 
-// Compute displayed images based on current page
-const displayedImages = computed(() => {
-  return shuffledImages.slice(0, currentPage.value * pageSize)
-})
-
-// Check if there are more images to load
-const hasMoreImages = computed(() => {
-  return displayedImages.value.length < shuffledImages.length
-})
-
 // Distribute images into columns
 const distributeImages = () => {
   // Clear existing columns
   columns.forEach((column) => (column.length = 0))
 
   // Distribute images to columns (one by one to each column)
-  displayedImages.value.forEach((image, index) => {
+  displayedItems.value.forEach((image, index) => {
     const columnIndex = index % columnCount.value
     columns[columnIndex].push(image)
   })
 }
+
+// Use the load more hook
+const {
+  loading,
+  displayedItems,
+  hasMoreItems: hasMoreImages,
+  loadMoreItems: loadMoreImages
+} = useLoadMore({
+  items: shuffledImages,
+  pageSize: 12,
+  initialPage: 1,
+  onLoadMore: distributeImages
+})
 
 // Update columns when window resizes
 const updateColumnCount = () => {
@@ -75,20 +74,6 @@ const updateColumnCount = () => {
     // Redistribute images
     distributeImages()
   }
-}
-
-// Load more images when scrolled to bottom
-const loadMoreImages = () => {
-  if (loading.value || !hasMoreImages.value) return
-
-  loading.value = true
-
-  // Simulate network delay (remove in production)
-  setTimeout(() => {
-    currentPage.value++
-    loading.value = false
-    distributeImages() // Redistribute images after loading more
-  }, 500)
 }
 
 useOnScrollToEnd({ loadMoreImages })
@@ -119,30 +104,17 @@ useMounted({
     <div class="waterfall-container">
       <div class="waterfall">
         <!-- Each column is a separate div -->
-        <div
-          v-for="(column, colIndex) in columns"
-          :key="'col-' + colIndex"
-          class="waterfall-column"
-        >
+        <div v-for="(column, colIndex) in columns" :key="'col-' + colIndex" class="waterfall-column">
           <!-- Each image in the column -->
-          <div
-            v-for="(image, imgIndex) in column"
-            :key="'img-' + colIndex + '-' + imgIndex"
-            class="waterfall-item"
-          >
-            <img
-              :src="image"
-              alt="waterfall image"
-              v-viewer="{
-                transition: false,
-                title: false,
-                toolbar: false,
-                navbar: false,
-                movable: false,
-                zoomable: false,
-              }"
-              @click="showViewer"
-            />
+          <div v-for="(image, imgIndex) in column" :key="'img-' + colIndex + '-' + imgIndex" class="waterfall-item">
+            <img :src="image" alt="waterfall image" v-viewer="{
+              transition: false,
+              title: false,
+              toolbar: false,
+              navbar: false,
+              movable: false,
+              zoomable: false,
+            }" @click="showViewer" />
           </div>
         </div>
       </div>
@@ -154,7 +126,7 @@ useMounted({
       </div>
 
       <!-- End of content message -->
-      <div v-if="!hasMoreImages && displayedImages.length > 0" class="end-message">
+      <div v-if="!hasMoreImages && displayedItems.length > 0" class="end-message">
         <p>已加载全部</p>
       </div>
     </div>
