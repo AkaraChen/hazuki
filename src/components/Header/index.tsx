@@ -99,22 +99,24 @@ export function Header() {
           collection
         </span>
       </div>
-      <div className="hidden sm:flex items-center gap-3">
+      <div className="hidden sm:flex items-center gap-4">
         <a
           href="https://github.com/AkaraChen/hazuki"
           target="_blank"
           rel="noopener noreferrer"
-          className="no-underline text-text-secondary hover:text-text transition-colors duration-200 group"
+          className="inline-flex items-center gap-2 no-underline text-text-secondary hover:text-text transition-colors duration-200 group"
         >
-          <Icon path={siGithub.path} className="opacity-60 group-hover:opacity-100 transition-opacity" />
+          <Icon path={siGithub.path} className="w-4 h-4 opacity-60 group-hover:opacity-100 transition-opacity" />
+          <span className="text-sm">Star on GitHub</span>
         </a>
         <a
           href="https://x.com/tanda_hazuki"
           target="_blank"
           rel="noopener noreferrer"
-          className="no-underline text-text-secondary hover:text-text transition-colors duration-200 group"
+          className="inline-flex items-center gap-2 no-underline text-text-secondary hover:text-text transition-colors duration-200 group"
         >
-          <Icon path={siX.path} className="opacity-60 group-hover:opacity-100 transition-opacity" />
+          <Icon path={siX.path} className="w-4 h-4 opacity-60 group-hover:opacity-100 transition-opacity" />
+          <span className="text-sm">Follow on X</span>
         </a>
       </div>
     </header>
