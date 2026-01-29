@@ -2,7 +2,6 @@ import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
-import vueDevTools from 'vite-plugin-vue-devtools'
 import { viteStaticCopy } from 'vite-plugin-static-copy'
 import sharp from 'sharp'
 import { readdir, stat } from 'node:fs/promises'
@@ -99,7 +98,6 @@ export default defineConfig({
       },
     }),
     vueJsx(),
-    vueDevTools(),
     viteStaticCopy({
       targets: [
         {
