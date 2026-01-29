@@ -4,6 +4,8 @@ import react from '@vitejs/plugin-react'
 import { viteStaticCopy } from 'vite-plugin-static-copy'
 import { imageOptimizerPlugin } from './vite-plugin-compress'
 
+const isDev = process.env.NODE_ENV === 'development'
+
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
@@ -16,7 +18,7 @@ export default defineConfig({
         },
       ],
     }),
-    imageOptimizerPlugin(),
+    !isDev && imageOptimizerPlugin(),
   ],
   resolve: {
     alias: {

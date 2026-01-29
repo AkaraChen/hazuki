@@ -3,7 +3,6 @@ import { MasonryPhotoAlbum, type Photo } from "react-photo-album";
 import Lightbox from "yet-another-react-lightbox";
 import { useOnScrollToEnd } from "../../hooks/useOnScrollToEnd";
 import { useLoadMore } from "../../hooks/useLoadMore";
-import { getColumns, isTouchDevice } from "../../utils/responsive";
 import { LazyImageRenderer } from "../LazyImage";
 
 interface GalleryProps {
@@ -24,8 +23,18 @@ export function Gallery({ photos }: GalleryProps) {
     threshold: 200,
   });
 
+  const columns = (containerWidth: number) => {
+    if (containerWidth <= 480) return 1;
+    if (containerWidth <= 768) return 2;
+    if (containerWidth <= 1200) return 3;
+    return 4;
+  };
+
   const handlePhotoClick = useCallback(({ index }: { index: number }) => {
-    if (!isTouchDevice()) {
+    const isTouch =
+      typeof window !== "undefined" &&
+      window.matchMedia("(pointer: coarse)").matches;
+    if (!isTouch) {
       setLightboxIndex(index);
     }
   }, []);
@@ -37,7 +46,7 @@ export function Gallery({ photos }: GalleryProps) {
 
       <MasonryPhotoAlbum
         photos={displayedItems}
-        columns={getColumns}
+        columns={columns}
         spacing={15}
         onClick={handlePhotoClick}
         render={{
