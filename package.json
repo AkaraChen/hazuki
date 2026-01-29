@@ -9,38 +9,28 @@
     "preview": "vite preview",
     "generate-images": "node scripts/generate-images.cjs",
     "build-only": "npm run generate-images && vite build",
-    "type-check": "vue-tsc --build",
-    "lint:oxlint": "oxlint . --fix -D correctness --ignore-path .gitignore",
-    "lint:eslint": "eslint . --fix",
-    "lint": "run-s lint:*",
-    "format": "prettier --write src/"
+    "type-check": "tsc -b",
+    "lint": "biome check --write",
+    "format": "biome format --write src/"
   },
   "dependencies": {
-    "pinia": "^3.0.1",
-    "v-viewer": "^3.0.21",
-    "viewerjs": "^1.11.7",
-    "vue": "^3.5.13",
-    "wc-github-corners": "^0.1.6"
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-photo-album": "^3.0.2",
+    "wc-github-corners": "^0.1.6",
+    "yet-another-react-lightbox": "^3.21.7"
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.9.0",
     "@tsconfig/node22": "^22.0.1",
     "@types/node": "^22.14.0",
-    "@vitejs/plugin-vue": "^5.2.3",
-    "@vitejs/plugin-vue-jsx": "^4.1.2",
-    "@vue/eslint-config-prettier": "^10.2.0",
-    "@vue/eslint-config-typescript": "^14.5.0",
-    "@vue/tsconfig": "^0.7.0",
-    "eslint": "^9.22.0",
-    "eslint-plugin-oxlint": "^0.16.0",
-    "eslint-plugin-vue": "~10.0.0",
-    "jiti": "^2.4.2",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^4.3.4",
     "npm-run-all2": "^7.0.2",
-    "oxlint": "^0.16.0",
-    "prettier": "3.5.3",
     "sharp": "^0.34.5",
     "typescript": "~5.8.0",
     "vite": "^6.2.4",
-    "vite-plugin-static-copy": "^3.0.0",
-    "vue-tsc": "^2.2.8"
+    "vite-plugin-static-copy": "^3.0.0"
   }
 }
