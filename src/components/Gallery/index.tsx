@@ -24,14 +24,11 @@ export function Gallery({ photos }: GalleryProps) {
     threshold: 200,
   });
 
-  const handlePhotoClick = useCallback(
-    ({ index }: { index: number }) => {
-      if (!isTouchDevice()) {
-        setLightboxIndex(index);
-      }
-    },
-    [],
-  );
+  const handlePhotoClick = useCallback(({ index }: { index: number }) => {
+    if (!isTouchDevice()) {
+      setLightboxIndex(index);
+    }
+  }, []);
 
   return (
     <div className="waterfall-container">
@@ -44,7 +41,17 @@ export function Gallery({ photos }: GalleryProps) {
         spacing={15}
         onClick={handlePhotoClick}
         render={{
-          image: (image, photo) => <LazyImageRenderer image={image} photo={photo} />,
+          image: (image, photo) => (
+            <LazyImageRenderer
+              image={{
+                src: image.src,
+                alt: image.alt,
+                width: image.width as number,
+                height: image.height as number,
+              }}
+              photo={photo.photo}
+            />
+          ),
         }}
       />
 
