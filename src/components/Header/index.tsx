@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { Menu, Home, Github, X } from 'lucide-react'
+import { Menu, Home } from 'lucide-react'
+import { siGithub, siX } from 'simple-icons/icons'
 import {
   Drawer,
   DrawerTrigger,
@@ -8,12 +9,20 @@ import {
 } from '@/components/ui/drawer'
 import { Button } from '@/components/ui/button'
 
+function Icon({ path, className = '' }: { path: string; className?: string }) {
+  return (
+    <svg className={`w-5 h-5 ${className}`} viewBox="0 0 24 24" fill="currentColor">
+      <path d={path} />
+    </svg>
+  )
+}
+
 function MenuItem({
-  icon: Icon,
+  icon,
   label,
   href,
 }: {
-  icon: typeof Home
+  icon: React.ReactNode
   label: string
   href: string
 }) {
@@ -24,7 +33,7 @@ function MenuItem({
       rel="noopener noreferrer"
       className="flex items-center gap-3 px-4 py-3 text-lg text-foreground hover:bg-muted/50 rounded-lg transition-colors"
     >
-      <Icon className="w-5 h-5" />
+      {icon}
       <span>{label}</span>
     </a>
   )
@@ -55,19 +64,21 @@ function DrawerMenu() {
                 size="icon"
                 className="hover:bg-transparent active:bg-transparent"
               >
-                <X className="h-5 w-5" />
+                <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M18 6L6 18M6 6l12 12" />
+                </svg>
               </Button>
             </DrawerClose>
           </div>
           <div className="flex-1 space-y-2 px-2">
             <div onClick={() => setOpen(false)}>
-              <MenuItem icon={Home} label="首页" href="/" />
+              <MenuItem icon={<Home className="w-5 h-5" />} label="首页" href="/" />
             </div>
             <div onClick={() => setOpen(false)}>
-              <MenuItem icon={Github} label="GitHub" href="https://github.com/AkaraChen/hazuki" />
+              <MenuItem icon={<Icon path={siGithub.path} />} label="GitHub" href="https://github.com/AkaraChen/hazuki" />
             </div>
             <div onClick={() => setOpen(false)}>
-              <MenuItem icon={X} label="Twitter" href="https://x.com/tanda_hazuki" />
+              <MenuItem icon={<Icon path={siX.path} />} label="Twitter" href="https://x.com/tanda_hazuki" />
             </div>
           </div>
         </div>
@@ -95,7 +106,7 @@ export function Header() {
           rel="noopener noreferrer"
           className="no-underline text-text-secondary hover:text-text transition-colors duration-200 group"
         >
-          <Github className="w-5 h-5 opacity-60 group-hover:opacity-100 transition-opacity" />
+          <Icon path={siGithub.path} className="opacity-60 group-hover:opacity-100 transition-opacity" />
         </a>
         <a
           href="https://x.com/tanda_hazuki"
@@ -103,7 +114,7 @@ export function Header() {
           rel="noopener noreferrer"
           className="no-underline text-text-secondary hover:text-text transition-colors duration-200 group"
         >
-          <X className="w-5 h-5 opacity-60 group-hover:opacity-100 transition-opacity" />
+          <Icon path={siX.path} className="opacity-60 group-hover:opacity-100 transition-opacity" />
         </a>
       </div>
     </header>
