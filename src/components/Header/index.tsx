@@ -1,31 +1,18 @@
-import { useState } from 'react'
-import { Menu, Home } from 'lucide-react'
-import { siGithub, siX } from 'simple-icons/icons'
-import {
-  Drawer,
-  DrawerTrigger,
-  DrawerContent,
-  DrawerClose,
-} from '@/components/ui/drawer'
-import { Button } from '@/components/ui/button'
+import { useState } from "react";
+import { Menu, Home } from "lucide-react";
+import { siGithub, siX } from "simple-icons/icons";
+import { Drawer, DrawerTrigger, DrawerContent, DrawerClose } from "@/components/ui/drawer";
+import { Button } from "@/components/ui/button";
 
-function Icon({ path, className = '' }: { path: string; className?: string }) {
+function Icon({ path, className = "" }: { path: string; className?: string }) {
   return (
     <svg className={`w-5 h-5 ${className}`} viewBox="0 0 24 24" fill="currentColor">
       <path d={path} />
     </svg>
-  )
+  );
 }
 
-function MenuItem({
-  icon,
-  label,
-  href,
-}: {
-  icon: React.ReactNode
-  label: string
-  href: string
-}) {
+function MenuItem({ icon, label, href }: { icon: React.ReactNode; label: string; href: string }) {
   return (
     <a
       href={href}
@@ -36,11 +23,11 @@ function MenuItem({
       {icon}
       <span>{label}</span>
     </a>
-  )
+  );
 }
 
 function DrawerMenu() {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
 
   return (
     <Drawer open={open} onOpenChange={setOpen} direction="left">
@@ -64,7 +51,13 @@ function DrawerMenu() {
                 size="icon"
                 className="hover:bg-transparent active:bg-transparent"
               >
-                <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <svg
+                  className="h-5 w-5"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
                   <path d="M18 6L6 18M6 6l12 12" />
                 </svg>
               </Button>
@@ -75,26 +68,32 @@ function DrawerMenu() {
               <MenuItem icon={<Home className="w-5 h-5" />} label="首页" href="/" />
             </div>
             <div onClick={() => setOpen(false)}>
-              <MenuItem icon={<Icon path={siGithub.path} />} label="GitHub" href="https://github.com/AkaraChen/hazuki" />
+              <MenuItem
+                icon={<Icon path={siGithub.path} />}
+                label="GitHub"
+                href="https://github.com/AkaraChen/hazuki"
+              />
             </div>
             <div onClick={() => setOpen(false)}>
-              <MenuItem icon={<Icon path={siX.path} />} label="Twitter" href="https://x.com/tanda_hazuki" />
+              <MenuItem
+                icon={<Icon path={siX.path} />}
+                label="Twitter"
+                href="https://x.com/tanda_hazuki"
+              />
             </div>
           </div>
         </div>
       </DrawerContent>
     </Drawer>
-  )
+  );
 }
 
 export function Header() {
   return (
-    <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+    <header className="sticky top-0 z-50 sm:static flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-2 sm:bg-transparent bg-background/80 backdrop-blur-sm sm:py-0 py-3">
       <div className="flex items-center gap-3 flex-1">
         <DrawerMenu />
-        <h1 className="text-2xl sm:text-3xl font-bold text-text tracking-tight">
-          反田叶月
-        </h1>
+        <h1 className="text-xl sm:text-2xl font-bold text-text tracking-tight">反田叶月</h1>
         <span className="text-sm text-text-secondary bg-border/50 px-2 py-1 rounded-full">
           collection
         </span>
@@ -106,7 +105,10 @@ export function Header() {
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 no-underline text-text-secondary hover:text-text transition-colors duration-200 group"
         >
-          <Icon path={siGithub.path} className="w-4 h-4 opacity-60 group-hover:opacity-100 transition-opacity" />
+          <Icon
+            path={siGithub.path}
+            className="w-4 h-4 opacity-60 group-hover:opacity-100 transition-opacity"
+          />
           <span className="text-sm">Star on GitHub</span>
         </a>
         <a
@@ -115,10 +117,13 @@ export function Header() {
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 no-underline text-text-secondary hover:text-text transition-colors duration-200 group"
         >
-          <Icon path={siX.path} className="w-4 h-4 opacity-60 group-hover:opacity-100 transition-opacity" />
+          <Icon
+            path={siX.path}
+            className="w-4 h-4 opacity-60 group-hover:opacity-100 transition-opacity"
+          />
           <span className="text-sm">Follow on X</span>
         </a>
       </div>
     </header>
-  )
+  );
 }
