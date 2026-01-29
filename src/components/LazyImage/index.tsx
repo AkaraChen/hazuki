@@ -20,8 +20,8 @@ export function LazyImage({ src, alt, width, height }: LazyImageProps) {
       height={height}
       placeholderSrc={placeholderSvg}
       effect="blur"
-      wrapperClassName="block w-auto h-auto overflow-hidden rounded-xl"
-      className="block w-auto h-auto rounded-xl transition-transform duration-300 hover:scale-[1.02]"
+      wrapperClassName="block w-auto h-auto overflow-hidden rounded-lg"
+      className="block w-auto h-auto rounded-lg transition-transform duration-300 hover:scale-[1.02]"
     />
   )
 }
