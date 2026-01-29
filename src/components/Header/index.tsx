@@ -18,7 +18,7 @@ function MenuItem({ icon, label, href }: { icon: React.ReactNode; label: string;
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="flex items-center gap-3 px-4 py-3 text-lg text-foreground hover:bg-muted/50 rounded-lg transition-colors"
+      className="flex items-center gap-3 py-3 text-lg text-foreground hover:bg-muted/50 rounded-lg transition-colors"
     >
       {icon}
       <span>{label}</span>
@@ -43,7 +43,7 @@ function DrawerMenu() {
       </DrawerTrigger>
       <DrawerContent className="h-full max-w-70 mr-auto border-r">
         <div className="flex flex-col h-full py-6">
-          <div className="flex items-center justify-between px-4 mb-6">
+          <div className="flex items-center justify-between px-4 mb-2">
             <span className="text-lg font-semibold">菜单</span>
             <DrawerClose asChild>
               <Button
@@ -63,7 +63,7 @@ function DrawerMenu() {
               </Button>
             </DrawerClose>
           </div>
-          <div className="flex-1 space-y-2 px-2">
+          <div className="flex-1 space-y-2 px-4">
             <div onClick={() => setOpen(false)}>
               <MenuItem icon={<Home className="w-5 h-5" />} label="首页" href="/" />
             </div>
@@ -90,10 +90,10 @@ function DrawerMenu() {
 
 export function Header() {
   return (
-    <header className="sticky top-0 z-50 sm:static flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-2 sm:bg-transparent bg-background/80 backdrop-blur-sm sm:py-0 py-3">
+    <header className="sticky top-0 z-50 sm:static max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-2 sm:bg-transparent bg-background/80 backdrop-blur-sm">
       <div className="flex items-center gap-3 flex-1">
         <DrawerMenu />
-        <h1 className="text-xl sm:text-2xl font-bold text-text tracking-tight">反田叶月</h1>
+        <h1 className="text-lg sm:text-xl font-medium text-text tracking-tight">反田叶月</h1>
         <span className="text-sm text-text-secondary bg-border/50 px-2 py-1 rounded-full">
           collection
         </span>
