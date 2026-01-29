@@ -79,6 +79,20 @@ body {
   transform: scale(1.02);
 }
 
+/* react-lazy-load-image-component styles */
+.lazy-image-wrapper {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.lazy-image-wrapper img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
 .loading-container {
   display: flex;
   flex-direction: column;

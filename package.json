@@ -16,6 +16,7 @@
   "dependencies": {
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-lazy-load-image-component": "^1.6.3",
     "react-photo-album": "^3.0.2",
     "wc-github-corners": "^0.1.6",
     "yet-another-react-lightbox": "^3.21.7"
@@ -26,6 +27,7 @@
     "@types/node": "^22.14.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "@types/react-lazy-load-image-component": "^1.6.5",
     "@vitejs/plugin-react": "^4.3.4",
     "npm-run-all2": "^7.0.2",
     "sharp": "^0.34.5",

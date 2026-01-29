@@ -1,13 +1,13 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import App from './App'
-import 'wc-github-corners'
-import 'react-photo-album/masonry.css'
-import 'yet-another-react-lightbox/styles.css'
-import './App.css'
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import App from "./App";
+import "wc-github-corners";
+import "react-photo-album/masonry.css";
+import "yet-another-react-lightbox/styles.css";
+import "./App.css";
 
-createRoot(document.getElementById('app')!).render(
+createRoot(document.getElementById("app")!).render(
   <StrictMode>
     <App />
   </StrictMode>,
-)
+);
