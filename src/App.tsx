@@ -48,9 +48,20 @@ function App() {
     threshold: 200,
   });
 
-  const handlePhotoClick = useCallback(({ index }: { index: number }) => {
-    setLightboxIndex(index);
+  // Check if device supports hover (desktop) - disable lightbox on touch devices
+  const isTouchDevice = useMemo(() => {
+    if (typeof window === "undefined") return false;
+    return window.matchMedia("(pointer: coarse)").matches;
   }, []);
+
+  const handlePhotoClick = useCallback(
+    ({ index }: { index: number }) => {
+      if (!isTouchDevice) {
+        setLightboxIndex(index);
+      }
+    },
+    [isTouchDevice],
+  );
 
   // Responsive columns matching original breakpoints
   const getColumns = (containerWidth: number) => {
