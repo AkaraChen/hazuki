@@ -75,10 +75,6 @@ body {
   transition: transform 0.3s ease;
 }
 
-.waterfall-container img:hover {
-  transform: scale(1.02);
-}
-
 /* react-lazy-load-image-component styles */
 .lazy-image-wrapper {
   display: block;
