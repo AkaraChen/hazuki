@@ -20,7 +20,7 @@ async function getImageFiles() {
         width: metadata.width,
         height: metadata.height,
       }
-    })
+    }),
   )
 
   return imageData

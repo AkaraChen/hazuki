@@ -1,8 +1,8 @@
-import { readdir, stat } from 'fs/promises'
 import { join } from 'path'
-import sharp from 'sharp'
 import { resolve } from 'url'
-import { Plugin } from 'vite'
+import { readdir, stat } from 'fs/promises'
+import sharp from 'sharp'
+import type { Plugin } from 'vite'
 
 export function imageOptimizerPlugin(): Plugin {
   let outDir: string
