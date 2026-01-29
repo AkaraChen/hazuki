@@ -1,6 +1,12 @@
 import { useCallback, useState } from 'react'
 import { MasonryPhotoAlbum, type Photo } from 'react-photo-album'
 import Lightbox from 'yet-another-react-lightbox'
+import Counter from 'yet-another-react-lightbox/plugins/counter'
+import Download from 'yet-another-react-lightbox/plugins/download'
+import Thumbnails from 'yet-another-react-lightbox/plugins/thumbnails'
+import Zoom from 'yet-another-react-lightbox/plugins/zoom'
+import 'yet-another-react-lightbox/plugins/counter.css'
+import 'yet-another-react-lightbox/plugins/thumbnails.css'
 import { useLoadMore } from '../../hooks/useLoadMore'
 import { useOnScrollToEnd } from '../../hooks/useOnScrollToEnd'
 import { LazyImageRenderer } from '../LazyImage'
@@ -74,11 +80,7 @@ export function Gallery({ photos }: GalleryProps) {
         close={() => setLightboxIndex(-1)}
         index={lightboxIndex}
         slides={displayedItems.map((photo) => ({ src: photo.src }))}
-        render={{
-          buttonPrev: () => null,
-          buttonNext: () => null,
-        }}
-        toolbar={{ buttons: [] }}
+        plugins={[Zoom, Thumbnails, Counter, Download]}
         controller={{ closeOnBackdropClick: true }}
         animation={{ fade: 0 }}
       />
