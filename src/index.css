@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: var(--background-color);
+  --color-text: var(--text-color);
+  --color-border: var(--border-color);
+  --color-end-message: var(--end-message-color);
+}
+
+:root {
+  --background-color: #ffffff;
+  --text-color: #333333;
+  --border-color: #eaeaea;
+  --end-message-color: #666;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background-color: #222222;
+    --text-color: #f5f5f5;
+    --border-color: #444444;
+    --end-message-color: #aaaaaa;
+  }
+}
+
+body {
+  margin: 0;
+  background-color: var(--background-color);
+}

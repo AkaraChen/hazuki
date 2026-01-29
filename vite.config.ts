@@ -1,6 +1,7 @@
-import { fileURLToPath, URL } from 'node:url'
-import { defineConfig } from 'vite'
+import { URL, fileURLToPath } from 'node:url'
+import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite'
 import { viteStaticCopy } from 'vite-plugin-static-copy'
 import { imageOptimizerPlugin } from './vite-plugin-compress'
 
@@ -10,6 +11,7 @@ const isDev = process.env.NODE_ENV === 'development'
 export default defineConfig({
   plugins: [
     react(),
+    tailwindcss(),
     viteStaticCopy({
       targets: [
         {
