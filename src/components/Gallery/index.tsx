@@ -24,9 +24,9 @@ export function Gallery({ photos }: GalleryProps) {
   })
 
   const columns = (containerWidth: number) => {
-    if (containerWidth <= 480) return 1
-    if (containerWidth <= 768) return 2
-    if (containerWidth <= 1200) return 3
+    if (containerWidth <= 480) return 2
+    if (containerWidth <= 768) return 3
+    if (containerWidth <= 1200) return 4
     return 4
   }
 
@@ -38,14 +38,11 @@ export function Gallery({ photos }: GalleryProps) {
   }, [])
 
   return (
-    <div className="w-full box-border [&_img]:rounded-lg [&_img]:transition-transform [&_img]:duration-300">
-      {/* @ts-expect-error Web Component */}
-      <github-corners repo="AkaraChen/hazuki" blank />
-
+    <div className="relative">
       <MasonryPhotoAlbum
         photos={displayedItems}
         columns={columns}
-        spacing={15}
+        spacing={16}
         onClick={handlePhotoClick}
         render={{
           image: (image, photo) => (
@@ -63,15 +60,15 @@ export function Gallery({ photos }: GalleryProps) {
       />
 
       {loading && (
-        <div className="flex flex-col items-center justify-center py-8 w-full">
-          <div className="w-10 h-10 border-4 border-black/10 rounded-full border-t-blue-500 animate-spin mb-2.5" />
-          <p>加载中...</p>
+        <div className="flex flex-col items-center justify-center py-12 w-full">
+          <div className="w-8 h-8 border-2 border-text-secondary/20 border-t-text-secondary rounded-full animate-spin mb-3" />
+          <p className="text-sm text-text-secondary">加载中...</p>
         </div>
       )}
 
       {!hasMoreItems && displayedItems.length > 0 && (
-        <div className="text-center py-5 text-end-message italic border-t border-border mt-5">
-          <p>已加载全部</p>
+        <div className="text-center py-8">
+          <p className="text-sm text-text-secondary">— 已加载全部 —</p>
         </div>
       )}
 

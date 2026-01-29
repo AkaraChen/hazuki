@@ -2,7 +2,7 @@ import { LazyLoadImage } from 'react-lazy-load-image-component'
 import 'react-lazy-load-image-component/src/effects/blur.css'
 import type { Photo } from 'react-photo-album'
 
-const placeholderSvg = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='%23f0f0f0' width='100' height='100'/%3E%3Cpath d='M30 35h40v30H30z' fill='%23ddd'/%3E%3Ccircle cx='40' cy='70' r='5' fill='%23ddd'/%3E%3Ccircle cx='60' cy='70' r='5' fill='%23ddd'/%3E%3C/svg%3E`
+const placeholderSvg = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='%23f5f5f5' width='100' height='100'/%3E%3Ccircle cx='50' cy='35' r='12' fill='%23e0e0e0'/%3E%3Cellipse cx='50' cy='75' rx='25' ry='20' fill='%23e0e0e0'/%3E%3C/svg%3E`
 
 interface LazyImageProps {
   src: string
@@ -20,7 +20,8 @@ export function LazyImage({ src, alt, width, height }: LazyImageProps) {
       height={height}
       placeholderSrc={placeholderSvg}
       effect="blur"
-      wrapperClassName="block w-auto h-auto [&>img]:block [&>img]:w-auto [&>img]:h-auto [&>img]:rounded-lg"
+      wrapperClassName="block w-auto h-auto overflow-hidden rounded-xl"
+      className="block w-auto h-auto rounded-xl transition-transform duration-300 hover:scale-[1.02]"
     />
   )
 }
