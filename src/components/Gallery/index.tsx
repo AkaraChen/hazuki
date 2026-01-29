@@ -31,10 +31,7 @@ export function Gallery({ photos }: GalleryProps) {
   }
 
   const handlePhotoClick = useCallback(({ index }: { index: number }) => {
-    const isTouch = typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches
-    if (!isTouch) {
-      setLightboxIndex(index)
-    }
+    setLightboxIndex(index)
   }, [])
 
   return (
