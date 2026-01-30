@@ -19,6 +19,7 @@ async function getImageFiles() {
         src: `/content/${file}`,
         width: metadata.width,
         height: metadata.height,
+        title: 'Photo of Hazuki Handa',
       }
     }),
   )

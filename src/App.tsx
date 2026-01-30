@@ -1,17 +1,18 @@
-import { useMemo } from "react";
-import { Gallery } from "./components/Gallery";
-import { Header } from "./components/Header";
-import images from "./images.json";
-import { shuffleArray } from "./utils";
+import { useMemo } from 'react'
+import { Gallery } from './components/Gallery'
+import { Header } from './components/Header'
+import images from './images.json'
+import { shuffleArray } from './utils'
 
 interface ImageData {
-  src: string;
-  width: number;
-  height: number;
+  src: string
+  width: number
+  height: number
+  title?: string
 }
 
 function App() {
-  const shuffledImages = useMemo(() => shuffleArray(images as ImageData[]), []);
+  const shuffledImages = useMemo(() => shuffleArray(images as ImageData[]), [])
 
   return (
     <div className="min-h-screen bg-background">
@@ -20,7 +21,7 @@ function App() {
         <Gallery photos={shuffledImages} />
       </div>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

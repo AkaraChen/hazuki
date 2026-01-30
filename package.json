@@ -8,7 +8,8 @@
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "generate-images": "node scripts/generate-images.cjs",
-    "build-only": "npm run generate-images && vite build",
+    "generate-sitemap": "node scripts/generate-sitemap.cjs",
+    "build-only": "npm run generate-images && npm run generate-sitemap && vite build",
     "type-check": "tsc -b",
     "lint": "biome check --write",
     "format": "biome format --write src/"
