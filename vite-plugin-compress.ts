@@ -79,8 +79,7 @@ async function convertPngToWebp(contentDir: string, files: string[]) {
 
   let original = 0
   let optimized = 0
-  let converted = 0
-  let kept = 0
+  let grew = 0
 
   await inBatches(targets, async (file) => {
     const filePath = join(contentDir, file)
@@ -88,27 +87,24 @@ async function convertPngToWebp(contentDir: string, files: string[]) {
       const originalSize = (await stat(filePath)).size
       const buffer = await sharp(filePath).webp({ lossless: true, effort: 6 }).toBuffer()
 
-      if (buffer.length >= originalSize) {
-        original += originalSize
-        optimized += originalSize
-        kept++
-        return
-      }
-
-      await writeFile(`${filePath.slice(0, -'.png'.length)}.webp`, buffer)
+      // Always emit the .webp: src/images.json addresses every PNG by its .webp
+      // name, so keeping the PNG when it fails to shrink would leave the gallery
+      // pointing at a file that does not exist. The worst case is one payload
+      // that got slightly bigger, and we report when that happens.
+      await writeFile(filePath.replace(/\.png$/i, '.webp'), buffer)
       await unlink(filePath)
       original += originalSize
       optimized += buffer.length
-      converted++
+      if (buffer.length >= originalSize) grew++
     } catch (err) {
       console.error(`[image-optimizer] Error processing ${file}:`, err)
     }
   })
 
-  const note = kept > 0 ? `, kept ${kept} as png (no gain)` : ''
+  const note = grew > 0 ? `, ${grew} ended up larger than the png` : ''
   console.log(
     `[image-optimizer] png->webp: ${mb(original)}MB -> ${mb(optimized)}MB ` +
-      `(-${savedPct(original, optimized)}%), ${converted} converted${note}`,
+      `(-${savedPct(original, optimized)}%), ${targets.length} converted${note}`,
   )
 }
 
