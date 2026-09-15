@@ -1,5 +1,4 @@
-import { join } from 'path'
-import { resolve } from 'url'
+import { join, resolve } from 'path'
 import { readdir, stat } from 'fs/promises'
 import sharp from 'sharp'
 import type { Plugin } from 'vite'
